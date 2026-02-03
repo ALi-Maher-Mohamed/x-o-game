@@ -24,6 +24,7 @@ for (const item of grid) {
     } else {
       currentTurn = "X";
     }
+    document.getElementById("instruction").innerHTML = `${currentTurn} turn`;
   });
   function evaluateWinner() {
     if (
@@ -57,4 +58,19 @@ for (const item of grid) {
       alert("Draw");
     }
   }
+}
+
+document.getElementById("reset-button").addEventListener("click", function () {
+  reset();
+});
+function reset() {
+  for (item of grid) {
+    let value = item.getAttribute("value");
+    let squareContent = document.querySelector(`.square[value="${value}"]`);
+    squareContent.innerHTML = "";
+    boardAray = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  }
+  gameIsOver = false;
+  currentTurn = "X";
+  document.getElementById("instruction").innerHTML = `${currentTurn} turn`;
 }

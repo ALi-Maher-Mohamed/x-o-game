@@ -11,8 +11,24 @@
   box-shadow: 0px 5px 13px rgb(0, 0, 0, 0.3);
 }
 body {
+  font-family: "Shantell Sans", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "BNCE" 0,
+    "INFM" 0,
+    "SPAC" 0;
   margin: 0px;
   background-color: #1b1b1b;
+}
+button {
+  font-family: "Shantell Sans", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "BNCE" 0,
+    "INFM" 0,
+    "SPAC" 0;
 }
 #grid-container {
   background-color: #f0db4f;
@@ -24,6 +40,16 @@ body {
   border-radius: 30px;
   box-shadow: 0px 5px 13px rgb(0, 0, 0, 0.9);
 }
+
+.square-content {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  font-size: 50px;
+  font-weight: bold;
+  user-select: none;
+}
+
 #all-content {
   height: 90vh;
   margin: 20px;
