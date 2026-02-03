@@ -1,17 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O Game</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>X-O Game</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div id="all-content">
-        <div id="main-content">
-<h2 id="instruction">
-    Welcome to the X-O Game! Click "Start Game" to begin playing.
-</h2>
+  <div id="all-content">
+    <div id="main-content">
+      <div id="container">
+        <div id="header">
+          <h2 id="instruction">X turn</h2>
         </div>
+
+        <div id="grid-container">
+          <div class="square square-left square-top">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square square-top"> ">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square square-right square-top">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square square-left">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square square-right">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square square-left  square-bottom">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+          <div class="square square-bottom">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+
+          <div class="square  square-right square-bottom">
+            <h3 class="square-content">
+              X
+            </h3>
+          </div>
+        </div>
+
+        <div id="footer">
+          <button class="action-btn" id="reset-button">Reset Game</button>
+        </div>
+      </div>
     </div>
+  </div>
+  </div>
 </body>
+
 </html>
