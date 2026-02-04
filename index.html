@@ -1,81 +1,61 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>X-O Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>X-O Game</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-</head>
-
-<body>
-  <div id="all-content">
-    <div id="main-content">
-      <div id="container">
-        <div id="header">
-          <h2 id="instruction">X turn</h2>
-        </div>
-
-        <div id="grid-container">
-          <div class="square square-left square-top" value='1'>
-            <h3 class="square-content">
-            </h3>
-          </div>
-          <div class="square square-top" value='2'>
-            <h3 class="square-content">
-
-            </h3>
-          </div>
-          <div class="square square-right square-top" value='3'>
-            <h3 class="square-content">
-
-            </h3>
-          </div>
-          <div class="square square-left" value='4'>
-            <h3 class="square-content">
-
-            </h3>
-          </div>
-          <div class="square" value='5'>
-            <h3 class="square-content">
-
-            </h3>
-          </div>
-          <div class="square square-right" value='6'>
-            <h3 class="square-content">
-
-            </h3>
-          </div>
-          <div class="square square-left  square-bottom" value='7'>
-            <h3 class="square-content">
-
-            </h3>
-          </div>
-          <div class="square square-bottom" value='8'>
-            <h3 class="square-content">
-
-            </h3>
+  <body>
+    <div id="all-content">
+      <div id="main-content">
+        <div id="container">
+          <div id="header">
+            <h1>🎮 Tic Tac Toe</h1>
+            <div id="instruction">X's Turn</div>
+            <div class="status-display" id="status"></div>
           </div>
 
-          <div class="square  square-right square-bottom" value='9'>
-            <h3 class="square-content">
-
-            </h3>
+          <div id="grid-container">
+            <div class="square" data-index="0"></div>
+            <div class="square" data-index="1"></div>
+            <div class="square" data-index="2"></div>
+            <div class="square" data-index="3"></div>
+            <div class="square" data-index="4"></div>
+            <div class="square" data-index="5"></div>
+            <div class="square" data-index="6"></div>
+            <div class="square" data-index="7"></div>
+            <div class="square" data-index="8"></div>
           </div>
-        </div>
 
-        <div id="footer">
-          <button class="action-btn" id="reset-button">Reset Game</button>
+          <div id="footer">
+            <button class="action-btn" id="reset-button">🔄 Reset Game</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat-item">
+              <div class="stat-label">X Wins</div>
+              <div class="stat-value" id="x-wins">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Draws</div>
+              <div class="stat-value" id="draws">0</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">O Wins</div>
+              <div class="stat-value" id="o-wins">0</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  </div>
-</body>
-
-<script src="logic.js"></script>
-
+  </body>
+  <script src="logic.js"></script>
 </html>

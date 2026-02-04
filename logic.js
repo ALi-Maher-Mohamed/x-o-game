@@ -1,76 +1,169 @@
-let grid = document.getElementsByClassName("square");
-let boardAray = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-let currentTurn = "X";
-let gameIsOver = false;
+// Game State
+const gameState = {
+  board: Array(9).fill(null),
+  currentPlayer: "X",
+  gameOver: false,
+  xWins: 0,
+  oWins: 0,
+  draws: 0,
+};
 
-for (const item of grid) {
-  item.addEventListener("click", function () {
-    if (gameIsOver) return;
+// Winning Combinations
+const WINNING_COMBINATIONS = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 
-    let value = item.getAttribute("value");
-    let index = value - 1;
-    if (boardAray[index] == "X" || boardAray[index] == "O") return;
+// Get DOM Elements
+const squares = document.querySelectorAll(".square");
+const instructionEl = document.getElementById("instruction");
+const resetBtn = document.getElementById("reset-button");
+const statusEl = document.getElementById("status");
+const xWinsEl = document.getElementById("x-wins");
+const oWinsEl = document.getElementById("o-wins");
+const drawsEl = document.getElementById("draws");
 
-    //   filling the value visually
-    let squareContent = document.querySelector(`.square[value="${value}"]`);
-    squareContent.innerHTML = currentTurn;
-    // filling the value logically
+// Load stats from localStorage
+function loadStats() {
+  const saved = localStorage.getItem("tictactoeStats");
+  if (saved) {
+    const stats = JSON.parse(saved);
+    gameState.xWins = stats.xWins || 0;
+    gameState.oWins = stats.oWins || 0;
+    gameState.draws = stats.draws || 0;
+    updateStatsDisplay();
+  }
+}
 
-    boardAray[index] = currentTurn;
-    console.log(boardAray);
-    evaluateWinner();
-    if (currentTurn === "X") {
-      currentTurn = "O";
-    } else {
-      currentTurn = "X";
-    }
-    document.getElementById("instruction").innerHTML = `${currentTurn} turn`;
-  });
-  function evaluateWinner() {
+// Save stats to localStorage
+function saveStats() {
+  localStorage.setItem(
+    "tictactoeStats",
+    JSON.stringify({
+      xWins: gameState.xWins,
+      oWins: gameState.oWins,
+      draws: gameState.draws,
+    }),
+  );
+}
+
+// Update stats display
+function updateStatsDisplay() {
+  xWinsEl.textContent = gameState.xWins;
+  oWinsEl.textContent = gameState.oWins;
+  drawsEl.textContent = gameState.draws;
+}
+
+// Check for winner
+function checkWinner() {
+  for (let combo of WINNING_COMBINATIONS) {
+    const [a, b, c] = combo;
     if (
-      // rows --------------------------------------------------
-      (boardAray[0] == boardAray[1] && boardAray[1] == boardAray[2]) ||
-      (boardAray[3] == boardAray[4] && boardAray[4] == boardAray[5]) ||
-      (boardAray[6] == boardAray[7] && boardAray[7] == boardAray[8]) ||
-      // columns --------------------------------------------------
-      (boardAray[0] == boardAray[3] && boardAray[3] == boardAray[6]) ||
-      (boardAray[1] == boardAray[4] && boardAray[4] == boardAray[7]) ||
-      (boardAray[2] == boardAray[5] && boardAray[5] == boardAray[8]) ||
-      // diagonal------------------------------------------
-      (boardAray[0] == boardAray[4] && boardAray[4] == boardAray[8]) ||
-      (boardAray[2] == boardAray[4] && boardAray[4] == boardAray[6])
+      gameState.board[a] &&
+      gameState.board[a] === gameState.board[b] &&
+      gameState.board[a] === gameState.board[c]
     ) {
-      var winner = currentTurn == "O" ? "O" : "X";
-      alert(`${winner} wins`);
-    }
-
-    var isDraw = false;
-    for (square of boardAray) {
-      if (square == "X" || square == "O") {
-        isDraw = true;
-      } else {
-        isDraw = false;
-        break;
-      }
-    }
-    if (isDraw) {
-      gameIsOver = true;
-      alert("Draw");
+      return gameState.board[a];
     }
   }
+  return null;
 }
 
-document.getElementById("reset-button").addEventListener("click", function () {
-  reset();
+// Check for draw
+function checkDraw() {
+  return gameState.board.every((cell) => cell !== null);
+}
+
+// Update instruction
+function updateInstruction() {
+  if (gameState.gameOver) {
+    return;
+  }
+  instructionEl.textContent = `${gameState.currentPlayer}'s Turn`;
+}
+
+// Handle square click
+function handleSquareClick(e) {
+  const square = e.target;
+  const index = parseInt(square.dataset.index);
+
+  // Check if game is over or square is occupied
+  if (gameState.gameOver || gameState.board[index] !== null) {
+    return;
+  }
+
+  // Update board
+  gameState.board[index] = gameState.currentPlayer;
+
+  // Update UI
+  square.textContent = gameState.currentPlayer;
+  square.classList.add("played");
+  square.classList.add(gameState.currentPlayer.toLowerCase());
+  square.classList.add("disabled");
+
+  // Check for winner
+  const winner = checkWinner();
+  if (winner) {
+    gameState.gameOver = true;
+    instructionEl.textContent = `🎉 ${winner} Wins!`;
+    statusEl.textContent = `${winner} is the Champion!`;
+    instructionEl.classList.add("winner-animation");
+
+    if (winner === "X") {
+      gameState.xWins++;
+    } else {
+      gameState.oWins++;
+    }
+    saveStats();
+    updateStatsDisplay();
+    return;
+  }
+
+  // Check for draw
+  if (checkDraw()) {
+    gameState.gameOver = true;
+    instructionEl.textContent = "🤝 It's a Draw!";
+    statusEl.textContent = "Both players played well!";
+    gameState.draws++;
+    saveStats();
+    updateStatsDisplay();
+    return;
+  }
+
+  // Switch player
+  gameState.currentPlayer = gameState.currentPlayer === "X" ? "O" : "X";
+  updateInstruction();
+}
+
+// Reset game
+function resetGame() {
+  gameState.board = Array(9).fill(null);
+  gameState.currentPlayer = "X";
+  gameState.gameOver = false;
+  statusEl.textContent = "";
+  instructionEl.classList.remove("winner-animation");
+
+  squares.forEach((square) => {
+    square.textContent = "";
+    square.classList.remove("played", "x", "o", "disabled");
+  });
+
+  updateInstruction();
+}
+
+// Event Listeners
+squares.forEach((square) => {
+  square.addEventListener("click", handleSquareClick);
 });
-function reset() {
-  for (item of grid) {
-    let value = item.getAttribute("value");
-    let squareContent = document.querySelector(`.square[value="${value}"]`);
-    squareContent.innerHTML = "";
-    boardAray = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  }
-  gameIsOver = false;
-  currentTurn = "X";
-  document.getElementById("instruction").innerHTML = `${currentTurn} turn`;
-}
+
+resetBtn.addEventListener("click", resetGame);
+
+// Initialize
+loadStats();
+updateInstruction();
